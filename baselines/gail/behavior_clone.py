@@ -73,7 +73,7 @@ def learn(env, policy_func, dataset, optim_batch_size=128, max_iters=1e4,
         savedir_fname = tempfile.TemporaryDirectory().name
     else:
         savedir_fname = osp.join(ckpt_dir, task_name)
-    U.save_state(savedir_fname, var_list=pi.get_variables())
+    U.save_state(savedir_fname)
     return savedir_fname
 
 
@@ -86,6 +86,12 @@ def get_task_name(args):
 
 
 def main(args):
+    session_conf = tf.ConfigProto(
+        log_device_placement=True,
+        gpu_options=tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+    )
+    sess = tf.Session(config=session_conf)
+
     U.make_session(num_cpu=1).__enter__()
     set_global_seeds(args.seed)
     env = gym.make(args.env_id)

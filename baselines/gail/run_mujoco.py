@@ -192,7 +192,7 @@ def runner(env, policy_func, load_model_path, timesteps_per_batch, number_trajs,
     print("Average return:", avg_ret)
     return avg_len, avg_ret
 
-
+import time
 # Sample one trajectory (until trajectory end)
 def traj_1_generator(pi, env, horizon, stochastic):
 
@@ -217,6 +217,8 @@ def traj_1_generator(pi, env, horizon, stochastic):
         acs.append(ac)
 
         ob, rew, new, _ = env.step(ac)
+        # env.render()
+        # time.sleep(0.033)
         rews.append(rew)
 
         cur_ep_ret += rew
